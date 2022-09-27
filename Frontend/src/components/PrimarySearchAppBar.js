@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -12,8 +13,6 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
@@ -56,13 +55,30 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
+const ViewLoginIcons = {
+  display: 'block'
+}
+const HoldLoginIcons = {
+  display: 'none'
+}
+
+
 
 export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [carrito, setCarrito] = React.useState(0);
+  const [isLogged, setIsLogged] = React.useState(false);
+
+  const beforeLoggin = !isLogged ? ViewLoginIcons : HoldLoginIcons;
+  const afterLoggin = isLogged ? ViewLoginIcons : HoldLoginIcons;
+
+
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -98,8 +114,15 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <BrowserRouter>
+        <Link to="/Profile">
+          <MenuItem onClick={handleMenuClose} style={afterLoggin}>Perfil</MenuItem>
+        </Link>
+        <MenuItem onClick={handleMenuClose} style={afterLoggin}>Salir</MenuItem>
+        <Link to="/Loggin">
+          <MenuItem onClick={handleMenuClose} style={beforeLoggin}>Iniciar Sesión</MenuItem>
+        </Link>
+      </BrowserRouter>
     </Menu>
   );
 
@@ -120,26 +143,6 @@ export default function PrimarySearchAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={3} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           size="large"
@@ -187,18 +190,8 @@ export default function PrimarySearchAppBar() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={2} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={3} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={1} color="error">
+            <IconButton style={afterLoggin} size="large" aria-label="show 4 new mails" color="inherit">
+              <Badge badgeContent={carrito} color="error">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>

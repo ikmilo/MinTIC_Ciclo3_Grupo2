@@ -1,4 +1,5 @@
 import SpacingGrid from '../../components/SpacingGrid'
+import Carousel from '../../components/Carousel'
 
 const ContenedorProducto = () => {
 
@@ -11,6 +12,7 @@ const ContenedorProducto = () => {
     }
     return (
         <div style={contenedorStyle}>
+            <Carousel></Carousel>
             <SpacingGrid></SpacingGrid>
         </div>
 

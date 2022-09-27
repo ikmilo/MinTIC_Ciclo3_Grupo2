@@ -8,7 +8,7 @@ import CardContent from '@mui/material/CardContent'
 const CardAppleWatch = () => {
   return (
     <Card sx={{ maxWidth: '500px'}}>
-      <CardMedia sx={{ height: '15rem', width: '200px', margin: 'auto' }} image='https://puppis.vteximg.com.br/arquivos/ids/183266-600-600/252213.jpg?v=637698190685970000' />
+      <CardMedia sx={{ height: '15rem', width: '200px', margin: 'auto' }} image='https://i0.wp.com/www.amiscot.com/wp-content/uploads/2021/08/520-1.jpg?fit=1000%2C1000&ssl=1' />
       <CardContent sx={{ padding: theme => `${theme.spacing(3, 1, 4)} !important` }}>
         <Typography variant='h6' sx={{ marginBottom: 2 }}>
           Casita Térmica Durapets Roja - 4
