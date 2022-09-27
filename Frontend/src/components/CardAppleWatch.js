@@ -20,7 +20,10 @@ const CardAppleWatch = () => {
           - Comedero de REGALO
         </Typography>
       </CardContent>
-      <Button variant='contained' sx={{ py: 2.5, width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0 }}>
+      <Button 
+      variant='contained' 
+      sx={{ py: 2.5, width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
+      >
         Agregar al Carrito
       </Button>
     </Card>

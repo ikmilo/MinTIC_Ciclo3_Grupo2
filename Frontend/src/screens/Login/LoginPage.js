@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useState} from 'react'
+import { Link} from 'react-router-dom';
+import { isValidEmail, isValidPassword } from '../../utils/MiscellaneousUtils'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Checkbox from '@mui/material/Checkbox'
@@ -9,11 +11,13 @@ import IconButton from '@mui/material/IconButton'
 import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
 import OutlinedInput from '@mui/material/OutlinedInput'
-import { styled} from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 //import {useTheme } from '@mui/material/styles'
 import MuiCard from '@mui/material/Card'
 import InputAdornment from '@mui/material/InputAdornment'
 import MuiFormControlLabel from '@mui/material/FormControlLabel'
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
@@ -48,12 +52,35 @@ const LoginPage = () => {
     justifyContent: 'center',
   }
 
+ 
+  const handleFocusFail = (error) => {
+
+    const view = {
+      boxShadow: '0 0px 5px 2px rgba(2520,35,35,.5)',
+      backgroundColor: 'rgba(2520,35,35,.2)',
+    }
+    const hold = { background: 'none' }
+
+    if (error) {
+      return hold
+    } else {
+      return view
+    }
+  }
+
+
 
   // ** State
   const [values, setValues] = useState({
     password: '',
     showPassword: false
   })
+
+  const [userValue, setUserValue] = useState(null)
+  const [validation, setValidation] = useState(true)
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [focusEmail, setFocusEmail] = useState(true)
+  const [focusPass, setFocusPass] = useState(true)
 
   // ** Hook
   //const theme = useTheme()
@@ -70,6 +97,39 @@ const LoginPage = () => {
     event.preventDefault()
   }
 
+  const handleButtomLogin = event => {
+    const emailValidation = isValidEmail(userValue)
+    const passValidation = isValidPassword(values.password);
+    setFocusPass(passValidation)
+    setFocusEmail(emailValidation)
+    setValidation(emailValidation && passValidation)
+    if (emailValidation && passValidation) {
+      console.log('Login Exitoso')
+    } else if (emailValidation) {
+      setErrorMessage('Contraseña invalida')
+    } else if (passValidation) {
+      setErrorMessage('email invalido')
+      console.log(emailValidation)
+    } else {
+      setErrorMessage('email o contraseña inválida')
+    }
+  }
+
+  const handleViewError = (error) => {
+
+    const view = { display: 'block' }
+    const hold = { display: 'none' }
+
+    if (error) {
+      return hold
+    } else {
+      return view
+    }
+  }
+
+
+
+
   return (
     <Box style={contentCenter}>
       <Card sx={{ zIndex: 1 }}>
@@ -81,10 +141,19 @@ const LoginPage = () => {
             <Typography variant='body2'>Inicia sesisón para comenzar a comprar</Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
+            <TextField
+              style={handleFocusFail(focusEmail)}
+              onChange={(event) => setUserValue(event.target.value)}
+              autoFocus
+              fullWidth
+              id='email'
+              label='Email'
+              sx={{ marginBottom: 4 }}
+            />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Contraseña</InputLabel>
               <OutlinedInput
+                style={handleFocusFail(focusPass)}                
                 label='Password'
                 value={values.password}
                 id='auth-login-password'
@@ -105,32 +174,34 @@ const LoginPage = () => {
               />
             </FormControl>
             <Box
-              sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
+              sx={{ mb: 1, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
             >
               <FormControlLabel control={<Checkbox />} label='Remember Me' />
-              
-                <LinkStyled onClick={e => e.preventDefault()}>Olvidaste tu Clave?</LinkStyled>
-              
+
             </Box>
             <Button
               fullWidth
               size='large'
               variant='contained'
-              sx={{ marginBottom: 7 }}
-              //onClick={() => router.push('/')}
+              sx={{ marginBottom: 2 }}
+              onClick={handleButtomLogin}
             >
               Login
             </Button>
+            <Stack style={handleViewError(validation)} sx={{ mb: 2, width: '100%', alignItems: 'center' }} spacing={2}>
+              <Alert severity="error">{errorMessage}</Alert>
+            </Stack>
             <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
               <Typography variant='body2' sx={{ marginRight: 2 }}>
                 ¿Eres nuevo en nuestra tienda?
               </Typography>
               <Typography variant='body2'>
-              
+                <Link to={"/RegisterPage"}>
                   <LinkStyled>Crear una Cuenta</LinkStyled>
-              
+                </Link>
               </Typography>
             </Box>
+
           </form>
         </CardContent>
       </Card>
