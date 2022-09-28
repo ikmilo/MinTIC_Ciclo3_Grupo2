@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -15,6 +15,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { AppContext } from '../contexts/LoginContext';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -56,10 +57,17 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 const ViewLoginIcons = {
-  display: 'block'
+  display: 'block',
+}
+const iconColor = {
+  color: '#fff',
 }
 const HoldLoginIcons = {
   display: 'none'
+}
+const NoStyleLink = {
+  textDecoration: 'none',
+  outline: 'none',
 }
 
 
@@ -68,16 +76,25 @@ export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [carrito, setCarrito] = React.useState(0);
-  const [isLogged, setIsLogged] = React.useState(false);
+  const [isLogged, setIsLogged] = React.useContext(AppContext);
 
-  const beforeLoggin = !isLogged ? ViewLoginIcons : HoldLoginIcons;
-  const afterLoggin = isLogged ? ViewLoginIcons : HoldLoginIcons;
+  //const beforeLoggin = !isLogged ? ViewLoginIcons : HoldLoginIcons;
+  //const afterLoggin = isLogged ? ViewLoginIcons : ViewLoginIcons;
 
 
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+  const handleIsLogged = (login) => {
+
+    if (login) {
+      return ViewLoginIcons
+    } else {
+      return HoldLoginIcons
+    }
+
+  }
 
 
   const handleProfileMenuOpen = (event) => {
@@ -92,7 +109,12 @@ export default function PrimarySearchAppBar() {
     setAnchorEl(null);
     handleMobileMenuClose();
   };
-
+  const handleCloseSesion = () => {
+    setIsLogged(false);
+    setAnchorEl(null);
+    handleMobileMenuClose();
+    handleMenuClose();
+  };
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
@@ -114,15 +136,15 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <BrowserRouter>
-        <Link to="/Profile">
-          <MenuItem onClick={handleMenuClose} style={afterLoggin}>Perfil</MenuItem>
-        </Link>
-        <MenuItem onClick={handleMenuClose} style={afterLoggin}>Salir</MenuItem>
-        <Link to="/Loggin">
-          <MenuItem onClick={handleMenuClose} style={beforeLoggin}>Iniciar Sesión</MenuItem>
-        </Link>
-      </BrowserRouter>
+      <Link to={"/LoginPage"} style={NoStyleLink} >
+        <MenuItem onClick={handleMenuClose} style={handleIsLogged(!isLogged)}>Iniciar Sesión</MenuItem>
+      </Link>
+      <Link to={"/Account"} style={NoStyleLink} >
+        <MenuItem onClick={handleMenuClose} style={handleIsLogged(isLogged)}>Perfil</MenuItem>
+      </Link>
+      <Link to={"/"} style={NoStyleLink} >
+        <MenuItem onClick={handleCloseSesion} style={handleIsLogged(isLogged)}>Salir</MenuItem>
+      </Link>
     </Menu>
   );
 
@@ -171,14 +193,16 @@ export default function PrimarySearchAppBar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
-            Tienda de Mascotas
-          </Typography>
+          <Link to={"/"} style={NoStyleLink}>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ display: { xs: 'none', sm: 'block' }, color: '#fff' }}
+            >
+              Tienda de Mascotas
+            </Typography>
+          </Link>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -189,12 +213,16 @@ export default function PrimarySearchAppBar() {
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton style={afterLoggin} size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={carrito} color="error">
-                <ShoppingCartIcon />
-              </Badge>
-            </IconButton>
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }} >
+            <div style={handleIsLogged(isLogged)}>
+              <Link to={"/Cart"} style={NoStyleLink} >
+                <IconButton style={iconColor} size="large" aria-label="show 4 new mails">
+                  <Badge badgeContent={carrito} color="error">
+                    <ShoppingCartIcon />
+                  </Badge>
+                </IconButton>
+              </Link>
+            </div>
             <IconButton
               size="large"
               edge="end"

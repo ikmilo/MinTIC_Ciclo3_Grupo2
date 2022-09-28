@@ -43,7 +43,7 @@ const TabName = styled('span')(({ theme }) => ({
 
 const AccountSettings = () => {
   // ** State
-  const [value, setValue] = useState('account')
+  const [value, setValue] = useState('Perfil')
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -86,13 +86,13 @@ const AccountSettings = () => {
           />
         </TabList>
 
-        <TabPanel sx={{ p: 0 }} value='Perfil'>
+        <TabPanel sx={{ p: 0 }} value='Perfil' index={0}>
           <TabAccount />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='Seguridad'>
+        <TabPanel sx={{ p: 1 }} value='Seguridad' index={1}>
           <TabSecurity />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='Compras'>
+        <TabPanel sx={{ p: 2 }} value='Compras' index={2}>
           <TableBasic />
         </TabPanel>
       </TabContext>
