@@ -8,9 +8,9 @@ public class Usuarios {
     private String password;
     private String name;
     private String lastname;
-    private boolean loggin;
+    private int loggin;
 
-    public Usuarios(int id, String username, String email, String password, String name, String lastname, boolean loggin) {
+    public Usuarios(int id, String username, String email, String password, String name, String lastname, int loggin) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -68,11 +68,11 @@ public class Usuarios {
         this.lastname = lastname;
     }
 
-    public boolean isLoggin() {
+    public int isLoggin() {
         return loggin;
     }
 
-    public void setLoggin(boolean loggin) {
+    public void setLoggin(int loggin) {
         this.loggin = loggin;
     }
 
