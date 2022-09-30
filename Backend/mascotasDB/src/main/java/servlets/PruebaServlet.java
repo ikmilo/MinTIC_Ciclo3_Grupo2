@@ -17,18 +17,8 @@ public class PruebaServlet extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             String id = request.getParameter("id");
             String name = request.getParameter("name");
-            
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet PruebaServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet PruebaServlet at " + request.getContextPath() + "</h1>");
             response.getWriter().append("ID: " + id);
-            response.getWriter().append(" Usuario: " + id);
-            out.println("</body>");
-            out.println("</html>");
+            response.getWriter().append(" Usuario: " + name);
         }
     }
 

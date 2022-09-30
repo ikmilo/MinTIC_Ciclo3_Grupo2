@@ -1,7 +1,7 @@
 import React, { createContext, useState } from 'react';
 
 const Provider = ({ children }) =>{
-  const [isLogged,setIsLogged] = useState(true);
+  const [isLogged,setIsLogged] = useState(false);
   return (            
           <AppContext.Provider value={[isLogged,setIsLogged]}>
               {children}

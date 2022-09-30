@@ -1,5 +1,5 @@
-import { useState} from 'react'
-import { Link} from 'react-router-dom';
+import { useState } from 'react'
+import { Link } from 'react-router-dom';
 import { isValidEmail, isValidPassword } from '../../utils/MiscellaneousUtils'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -18,6 +18,7 @@ import InputAdornment from '@mui/material/InputAdornment'
 import MuiFormControlLabel from '@mui/material/FormControlLabel'
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
+import {LoginAPI} from '../../services/LoginAPI' 
 
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
@@ -52,7 +53,7 @@ const LoginPage = () => {
     justifyContent: 'center',
   }
 
- 
+
   const handleFocusFail = (error) => {
 
     const view = {
@@ -68,7 +69,10 @@ const LoginPage = () => {
     }
   }
 
-
+  const handleLoginAPI = (user, password) => {
+    const url = ("http://localhost:8080/mascotasDB/ServletUsuarioLogin")
+    LoginAPI(url,user,password)
+  }
 
   // ** State
   const [values, setValues] = useState({
@@ -104,7 +108,7 @@ const LoginPage = () => {
     setFocusEmail(emailValidation)
     setValidation(emailValidation && passValidation)
     if (emailValidation && passValidation) {
-      console.log('Login Exitoso')
+      handleLoginAPI(userValue, values.password)
     } else if (emailValidation) {
       setErrorMessage('Contraseña invalida')
     } else if (passValidation) {
@@ -153,7 +157,7 @@ const LoginPage = () => {
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Contraseña</InputLabel>
               <OutlinedInput
-                style={handleFocusFail(focusPass)}                
+                style={handleFocusFail(focusPass)}
                 label='Password'
                 value={values.password}
                 id='auth-login-password'
