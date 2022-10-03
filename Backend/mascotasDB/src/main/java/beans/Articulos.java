@@ -98,4 +98,5 @@ public class Articulos {
     public String toString() {
         return "Articulos{" + "id=" + id + ", title=" + title + ", description=" + description + ", url=" + url + ",stock=" + stock +", price=" + price +", categoria=" + categoria + ", typePet=" + typePet + ", status=" + status + '}';
     }    
+
 }

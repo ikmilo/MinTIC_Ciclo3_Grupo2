@@ -3,3 +3,9 @@ export const LOGIN_ENDPOINTS = {
   SIGN_UP: '/ServletUsuarioRegister',
 };
 
+export const ITEMS_ENDPOINTS = {
+  ITEM_LIST: '/ServletConsultarArticulo',
+  ITEM_REGISTER: '/ServletRegistrarArticulo',
+  ITEM_REQUEST: '/ServletUsuarioRegister',
+};
+

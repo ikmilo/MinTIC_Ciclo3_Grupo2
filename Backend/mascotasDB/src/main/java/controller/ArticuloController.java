@@ -1,20 +1,23 @@
 
 package controller;
 
-import beans.Articulos;
-import connection.DBConnection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.List;
 import com.google.gson.Gson;
+import beans.Articulos;
+import connection.DBConnection;
+import java.util.ArrayList;
 
 
 public class ArticuloController {
     
     Gson gson = new Gson();
 
-    public String listar_articulos(String title, String description, String categoria) {
+    public String listar_articulos() {
         DBConnection con = new DBConnection();
-        String sql = "SELECT * FROM articulos WHERE title LIKE '%"+title+"%' OR description LIKE '%"+description+"%' OR categoria LIKE '%"+categoria+"%'";
+        String sql = "SELECT * FROM articulos";
+        List<String> item = new ArrayList<String>();
         try {
             Statement st = con.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -33,8 +36,7 @@ public class ArticuloController {
                 int status = rs.getInt("status");
                 
                 Articulos articulo = new Articulos(idStr,titulo_completo, descripcion_completa,url,stock,price,categoria_completa,typePet, status);
-                //  System.out.println("el usuario " + username + " ingresó al sistema");                            
-                return gson.toJson(articulo);
+                item.add(gson.toJson(articulo));
                 
             }
         } catch (Exception ex) {
@@ -42,7 +44,7 @@ public class ArticuloController {
         } finally {
             con.desconectar();
         }
-        return "false";
+         return gson.toJson(item);
     }
     
     //función registrar articulo

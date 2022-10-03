@@ -1,11 +1,20 @@
-export const PokeAPI = async () => {
-    try {
-        const res = await fetch('https://pokeapi.co/api/v2/pokemon/')
-        const data = await res.json()
-        console.log(data.results)
+import apiInstance from '../AxiosConect'
+import { ITEMS_ENDPOINTS } from '../constants/GlobalConstants';
 
-    } catch (e) {
-        console.log(e)
-    }
+export const ItemListAPI = {
+    itemList: () => {
+        return apiInstance.get(ITEMS_ENDPOINTS.ITEM_LIST).then(({ data }) => data);
+    },
 }
+export const ItemRegisterAPI = {
+    itemRegister: (username, email, pass) => {
+        return apiInstance.get(ITEMS_ENDPOINTS.ITEM_REGISTER, { params: { username: username, email: email, password: pass } }).then(({ data }) => data);
 
+    },
+}
+export const ItemRequestAPI = {
+    itemRequest: (username, email, pass) => {
+        return apiInstance.get(ITEMS_ENDPOINTS.ITEM_REQUEST, { params: { username: username, email: email, password: pass } }).then(({ data }) => data);
+
+    },
+}
