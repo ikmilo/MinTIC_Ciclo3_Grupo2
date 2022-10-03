@@ -1,10 +1,14 @@
-import $ from 'jquery'; 
+import apiInstance from '../AxiosConect'
+import { LOGIN_ENDPOINTS } from '../constants/GlobalConstants';
 
-export const LoginAPI = (url, email, password) => {
-    $.get(url, { email: email, password:password },
-        function (data, textStatus, XMLHttpRequest) {
-            console.log(data)
-            console.log(textStatus)
-            console.log(XMLHttpRequest)
-        });
+export const LoginAPI = {
+    login: (user, password) => {
+        return apiInstance.get(LOGIN_ENDPOINTS.LOGIN, { params: { email: user, password: password } }).then(({ data }) => data);
+    },
+}
+export const RegisterAPI = {
+    signUp: (username, email, pass) => {
+        return apiInstance.get(LOGIN_ENDPOINTS.SIGN_UP, { params: { username: username, email: email, password: pass } }).then(({ data }) => data);
+
+    },
 }

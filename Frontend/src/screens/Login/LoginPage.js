@@ -1,6 +1,6 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom';
-import { isValidEmail, isValidPassword } from '../../utils/MiscellaneousUtils'
+import { useState, useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
+import { isValidEmail } from '../../utils/MiscellaneousUtils'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Checkbox from '@mui/material/Checkbox'
@@ -18,11 +18,13 @@ import InputAdornment from '@mui/material/InputAdornment'
 import MuiFormControlLabel from '@mui/material/FormControlLabel'
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
-import {LoginAPI} from '../../services/LoginAPI' 
+import { LoginAPI } from '../../services/LoginAPI'
+import { AppContext } from '../../contexts/LoginContext';
 
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
+import { WindowSharp } from '@mui/icons-material';
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -54,25 +56,7 @@ const LoginPage = () => {
   }
 
 
-  const handleFocusFail = (error) => {
 
-    const view = {
-      boxShadow: '0 0px 5px 2px rgba(2520,35,35,.5)',
-      backgroundColor: 'rgba(2520,35,35,.2)',
-    }
-    const hold = { background: 'none' }
-
-    if (error) {
-      return hold
-    } else {
-      return view
-    }
-  }
-
-  const handleLoginAPI = (user, password) => {
-    const url = ("http://localhost:8080/mascotasDB/ServletUsuarioLogin")
-    LoginAPI(url,user,password)
-  }
 
   // ** State
   const [values, setValues] = useState({
@@ -80,14 +64,15 @@ const LoginPage = () => {
     showPassword: false
   })
 
-  const [userValue, setUserValue] = useState(null)
-  const [validation, setValidation] = useState(true)
-  const [errorMessage, setErrorMessage] = useState(null)
-  const [focusEmail, setFocusEmail] = useState(true)
-  const [focusPass, setFocusPass] = useState(true)
+  const [userValue, setUserValue] = useState(null);
+  const [validation, setValidation] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [focusEmail, setFocusEmail] = useState(true);
+  const [focusPass, setFocusPass] = useState(true);
+  const [isLogged, setIsLogged] = useContext(AppContext);
+  const [userInfo, setUserInfo] = useContext(AppContext);
+  const navigate = useNavigate();
 
-  // ** Hook
-  //const theme = useTheme()
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
@@ -102,16 +87,15 @@ const LoginPage = () => {
   }
 
   const handleButtomLogin = event => {
+    event.preventDefault()
     const emailValidation = isValidEmail(userValue)
-    const passValidation = isValidPassword(values.password);
-    setFocusPass(passValidation)
     setFocusEmail(emailValidation)
-    setValidation(emailValidation && passValidation)
-    if (emailValidation && passValidation) {
-      handleLoginAPI(userValue, values.password)
+    setValidation(emailValidation)
+    if (emailValidation) {
+      handleLoginAPI(userValue, values.password, event)
     } else if (emailValidation) {
       setErrorMessage('Contraseña invalida')
-    } else if (passValidation) {
+    } else if (validation) {
       setErrorMessage('email invalido')
       console.log(emailValidation)
     } else {
@@ -131,8 +115,42 @@ const LoginPage = () => {
     }
   }
 
+  const handleFocusFail = (error) => {
+
+    const view = {
+      boxShadow: '0 0px 5px 2px rgba(2520,35,35,.5)',
+      backgroundColor: 'rgba(2520,35,35,.2)',
+    }
+    const hold = { background: 'none' }
+
+    if (error) {
+      return hold
+    } else {
+      return view
+    }
+  }
 
 
+
+  const handleLoginAPI = (user, password) => {
+    LoginAPI.login(user, password)
+      .then(res => {
+        if (res !== false) {
+          setIsLogged(true);
+          setUserInfo(res);
+          console.clear();
+          navigate("/");
+        } else {
+          setValidation(res)
+          setErrorMessage('email o contraseña inválida')
+        }
+      })
+      .catch((e) => {
+        console.error("Error Inesperado")
+
+      })
+
+  }
 
   return (
     <Box style={contentCenter}>
@@ -144,7 +162,7 @@ const LoginPage = () => {
             </Typography>
             <Typography variant='body2'>Inicia sesisón para comenzar a comprar</Typography>
           </Box>
-          <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
+          <form action="/" noValidate autoComplete='off' onSubmit={handleButtomLogin} >
             <TextField
               style={handleFocusFail(focusEmail)}
               onChange={(event) => setUserValue(event.target.value)}
@@ -188,7 +206,7 @@ const LoginPage = () => {
               size='large'
               variant='contained'
               sx={{ marginBottom: 2 }}
-              onClick={handleButtomLogin}
+              type="submit"
             >
               Login
             </Button>
@@ -205,7 +223,6 @@ const LoginPage = () => {
                 </Link>
               </Typography>
             </Box>
-
           </form>
         </CardContent>
       </Card>
@@ -214,3 +231,11 @@ const LoginPage = () => {
 }
 
 export default LoginPage
+
+
+
+const dic = {
+  "operation": "read-attribute",
+  "address": [{ "subsystem": "logging" },{ "log-file": "server.log" }],
+  "name": "stream"
+}
