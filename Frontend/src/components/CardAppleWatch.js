@@ -10,10 +10,13 @@ const CardAppleWatch = (data) => {
 
   const [car, setCar] = useContext(AppContext);
 
-  const articulo = data.data
-  const id = articulo.url.slice(-3).split("/").join('')
-  const img = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`
-  console.log(car)
+  const jsonTxt = data;
+  const txt = jsonTxt.data;
+  const articulo = JSON.parse(txt);
+  
+  const currency = (number)=>{
+    return new Intl.NumberFormat('en-ES', {style: 'currency',currency: 'USD', minimumFractionDigits: 2}).format(number);
+};
   const handleCarChopping = (item) => {
     console.log("Mensaje")
     //setCarrito([...carrito, item])
@@ -21,16 +24,14 @@ const CardAppleWatch = (data) => {
 
   return (
     <Card sx={{ maxWidth: '500px' }}>
-      <CardMedia sx={{ height: '15rem', width: '270px', margin: 'auto' }} image={img} />
+      <CardMedia sx={{ height: '15rem', width: '270px', margin: 'auto' }} image={articulo.url} />
       <CardContent sx={{ padding: theme => `${theme.spacing(3, 1, 4)} !important` }}>
         <Typography variant='h6' sx={{ marginBottom: 2 }}>
-          {articulo.name}
+          {articulo.title}
         </Typography>
-        <Typography sx={{ marginBottom: 2 }}>$120USD</Typography>
-        <Typography variant='body1'>
-          - Medidas: 92.0 x 90.0 x 89.0 cm ( Largo x Ancho x Alto)
-          - Peso: 10.3 kg.
-          - Comedero de REGALO
+        <Typography sx={{ marginBottom: 2 }}>{currency(articulo.price)}</Typography>
+        <Typography variant='body1' sx={{width: '500px'}}>
+          {articulo.description}
         </Typography>
       </CardContent>
       <Button

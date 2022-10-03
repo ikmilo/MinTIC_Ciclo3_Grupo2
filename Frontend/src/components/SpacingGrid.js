@@ -4,6 +4,7 @@ import Paper from '@mui/material/Paper';
 import CardAppleWatch from './CardAppleWatch';
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
+import { ItemListAPI } from '../services/ProductsAPI'
 
 
 
@@ -25,19 +26,32 @@ export default function SpacingGrid() {
       console.log(e)
     }
   }
+  const handleItemList = async () => {
+    try {
+      await ItemListAPI.itemList()
+        .then(res => {
+          setArticulos(res);
+        })
+      setIsLoaded(true)
+    } catch (e) {
+      console.log(e)
+      console.log("Algo está fallando")
+    }
+
+  }
 
   useEffect(() => {
-    handlePokeAPI()
+    handleItemList()
       .then(
-        console.clear()
-      );
+
+    );
   }, []);
 
   return (
     <>
       {isLoaded ?
-        <Grid sx={{ flexGrow: 1 }} container spacing={2}>
-          <Grid item xs={12}>
+        <Grid sx={{ flexGrow: 1}} container spacing={2}>
+          <Grid item xs={13}>
             <Grid container justifyContent="center" spacing={spacing}>
               {articulos.map((value) => (
                 <Grid item>

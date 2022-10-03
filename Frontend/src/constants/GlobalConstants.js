@@ -4,8 +4,8 @@ export const LOGIN_ENDPOINTS = {
 };
 
 export const ITEMS_ENDPOINTS = {
-  ITEM_LIST: '/ServletConsultarArticulo',
+  ITEM_LIST: '/ServletListarArticulos',
   ITEM_REGISTER: '/ServletRegistrarArticulo',
-  ITEM_REQUEST: '/ServletUsuarioRegister',
+  ITEM_REQUEST: '/ServletConsultarArticulo',
 };
 
