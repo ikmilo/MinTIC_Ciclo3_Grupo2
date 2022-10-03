@@ -2,12 +2,15 @@ package beans;
 
 public class Articulos {
     
- private int id, stock ;   
- private String title, description, url, categoria, typePet;
+   
+ private String id;
+ private String title, description, url;
+ private int stock ;
+ private String categoria, typePet;
  private float price ;
- private boolean status;
+ private int status;
 
-    public Articulos(int id, int stock, String title, String description, String url, String categoria, String typePet, float price, boolean status) {
+    public Articulos(String id, String title, String description, String url, int stock, float price, String categoria, String typePet, int status) {
         this.id = id;
         this.stock = stock;
         this.title = title;
@@ -16,14 +19,14 @@ public class Articulos {
         this.categoria = categoria;
         this.typePet = typePet;
         this.price = price;
-        this.status = status;
+        this.status = status; 
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -83,22 +86,16 @@ public class Articulos {
         this.price = price;
     }
 
-    public boolean isStatus() {
+    public int isStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
     @Override
     public String toString() {
-        return "Articulos{" + "id=" + id + ", stock=" + stock + ", title=" + title + ", description=" + description + ", url=" + url + ", categoria=" + categoria + ", typePet=" + typePet + ", price=" + price + ", status=" + status + '}';
-    }
- 
- 
- 
- 
-
-    
+        return "Articulos{" + "id=" + id + ", title=" + title + ", description=" + description + ", url=" + url + ",stock=" + stock +", price=" + price +", categoria=" + categoria + ", typePet=" + typePet + ", status=" + status + '}';
+    }    
 }

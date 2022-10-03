@@ -48,9 +48,9 @@ public class OperacionesBD {
                 String categoria = rs.getString("categoia");
                 String typePet = rs.getString("typePet");
                 float price = rs.getFloat("price");
-                boolean status = rs.getBoolean("status");
-                Articulos articulos = new Articulos(id, stock, title, description, url, categoria, typePet, price, status);
-                System.out.println(articulos.toString());
+                int status = rs.getInt("status");
+               // Articulos articulos = new Articulos(id, stock, title, description, url, categoria, typePet, price, status);
+               // System.out.println(articulos.toString());
             }
             st.executeQuery(sql);
         } catch (Exception ex) {
