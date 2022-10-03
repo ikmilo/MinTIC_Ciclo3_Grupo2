@@ -1,17 +1,30 @@
-// ** MUI Imports
+import React, { useContext } from 'react';
 import Card from '@mui/material/Card'
 import Button from '@mui/material/Button'
 import CardMedia from '@mui/material/CardMedia'
 import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
+import { AppContext } from '../contexts/LoginContext';
 
-const CardAppleWatch = () => {
+const CardAppleWatch = (data) => {
+
+  const [car, setCar] = useContext(AppContext);
+
+  const articulo = data.data
+  const id = articulo.url.slice(-3).split("/").join('')
+  const img = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`
+  console.log(car)
+  const handleCarChopping = (item) => {
+    console.log("Mensaje")
+    //setCarrito([...carrito, item])
+  }
+
   return (
-    <Card sx={{ maxWidth: '500px'}}>
-      <CardMedia sx={{ height: '15rem', width: '200px', margin: 'auto' }} image='https://i0.wp.com/www.amiscot.com/wp-content/uploads/2021/08/520-1.jpg?fit=1000%2C1000&ssl=1' />
+    <Card sx={{ maxWidth: '500px' }}>
+      <CardMedia sx={{ height: '15rem', width: '270px', margin: 'auto' }} image={img} />
       <CardContent sx={{ padding: theme => `${theme.spacing(3, 1, 4)} !important` }}>
         <Typography variant='h6' sx={{ marginBottom: 2 }}>
-          Casita Térmica Durapets Roja - 4
+          {articulo.name}
         </Typography>
         <Typography sx={{ marginBottom: 2 }}>$120USD</Typography>
         <Typography variant='body1'>
@@ -20,9 +33,10 @@ const CardAppleWatch = () => {
           - Comedero de REGALO
         </Typography>
       </CardContent>
-      <Button 
-      variant='contained' 
-      sx={{ py: 2.5, width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
+      <Button
+        variant='contained'
+        sx={{ py: 2.5, width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
+        onClick={(event)=>{handleCarChopping(articulo)}}
       >
         Agregar al Carrito
       </Button>

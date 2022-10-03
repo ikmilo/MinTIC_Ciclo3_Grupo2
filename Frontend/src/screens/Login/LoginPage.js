@@ -24,7 +24,7 @@ import { AppContext } from '../../contexts/LoginContext';
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
-import { WindowSharp } from '@mui/icons-material';
+
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -92,7 +92,7 @@ const LoginPage = () => {
     setFocusEmail(emailValidation)
     setValidation(emailValidation)
     if (emailValidation) {
-      handleLoginAPI(userValue, values.password, event)
+      handleLoginAPI(userValue, values.password)
     } else if (emailValidation) {
       setErrorMessage('Contraseña invalida')
     } else if (validation) {
@@ -138,7 +138,6 @@ const LoginPage = () => {
         if (res !== false) {
           setIsLogged(true);
           setUserInfo(res);
-          console.clear();
           navigate("/");
         } else {
           setValidation(res)
@@ -147,6 +146,7 @@ const LoginPage = () => {
       })
       .catch((e) => {
         console.error("Error Inesperado")
+        console.log(e)
 
       })
 
@@ -231,11 +231,3 @@ const LoginPage = () => {
 }
 
 export default LoginPage
-
-
-
-const dic = {
-  "operation": "read-attribute",
-  "address": [{ "subsystem": "logging" },{ "log-file": "server.log" }],
-  "name": "stream"
-}

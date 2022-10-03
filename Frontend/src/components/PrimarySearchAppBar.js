@@ -75,16 +75,11 @@ const NoStyleLink = {
 export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-  const [carrito, setCarrito] = React.useState(0);
+  const [carrito, setCarrito] = React.useContext(AppContext);
   const [isLogged, setIsLogged] = React.useContext(AppContext);
-
-  //const beforeLoggin = !isLogged ? ViewLoginIcons : HoldLoginIcons;
-  //const afterLoggin = isLogged ? ViewLoginIcons : ViewLoginIcons;
-
-
-
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const count = carrito.length
 
   const handleIsLogged = (login) => {
 
@@ -179,7 +174,6 @@ export default function PrimarySearchAppBar() {
       </MenuItem>
     </Menu>
   );
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -217,7 +211,7 @@ export default function PrimarySearchAppBar() {
             <div style={handleIsLogged(isLogged)}>
               <Link to={"/Cart"} style={NoStyleLink} >
                 <IconButton style={iconColor} size="large" aria-label="show 4 new mails">
-                  <Badge badgeContent={carrito} color="error">
+                  <Badge badgeContent={count} color="error">
                     <ShoppingCartIcon />
                   </Badge>
                 </IconButton>
