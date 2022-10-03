@@ -1,6 +1,6 @@
-import { useState, Fragment } from 'react'
-import { Link } from 'react-router-dom';
-import { isValidEmail, isValidPassword } from '../../utils/MiscellaneousUtils'
+import { useState, Fragment, useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
+import { isValidEmail, isValidPassword, isValidUser } from '../../utils/MiscellaneousUtils'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Checkbox from '@mui/material/Checkbox'
@@ -12,12 +12,13 @@ import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import { styled } from '@mui/material/styles'
-//import {useTheme } from '@mui/material/styles'
 import MuiCard from '@mui/material/Card'
 import InputAdornment from '@mui/material/InputAdornment'
 import MuiFormControlLabel from '@mui/material/FormControlLabel'
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
+import { RegisterAPI } from '../../services/LoginAPI'
+import { AppContext } from '../../contexts/LoginContext';
 
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
@@ -55,21 +56,46 @@ const RegisterPage = () => {
 
   // ** State
   const [values, setValues] = useState({
-    password: '',
+    username:'',
+    email:'',
+    password:'',
     showPassword: false
   })
+  const [userValue, setUserValue] = useState(null);
+  const [validation, setValidation] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [focusUser, setFocusUser] = useState(true);
+  const [focusEmail, setFocusEmail] = useState(true);
+  const [focusPass, setFocusPass] = useState(true);
+  const [userValidation, setUserValidation] = useState(false);
+  const [emailValidation, setEmailValidation] = useState(false);
+  const [passValidation, setPassValidation] = useState(false);
+  const [isClear, setIsClear] = useState(true);
+  const [isLogged, setIsLogged] = useContext(AppContext);
+  const [userInfo, setUserInfo] = useContext(AppContext);
 
-  const [userValue, setUserValue] = useState(null)
-  const [validation, setValidation] = useState(true)
-  const [errorMessage, setErrorMessage] = useState(null)
-  const [focusEmail, setFocusEmail] = useState(true)
-  const [focusPass, setFocusPass] = useState(true)
+  const msjError = {
+    user:'El usaurio debe tener de 4 a 15 caracteres',
+    email:'el email ingresado no es válido',
+    password:'La contraseña debe ser de mínimo 8 caracteres y debe contener Mayusculas, minusculas, numeros y caracter especial'
+  }
+
+  const navigate = useNavigate();
 
   // ** Hook
   //const theme = useTheme()
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
+    setUserValidation(isValidUser(values.username))
+    setEmailValidation(isValidEmail(values.email))
+    setPassValidation(isValidPassword(values.password))
+    if (!isClear) {
+      setFocusUser(userValidation)
+      setFocusEmail(emailValidation)
+      setFocusPass(passValidation)
+    }
+
   }
 
   const handleClickShowPassword = () => {
@@ -80,20 +106,23 @@ const RegisterPage = () => {
     event.preventDefault()
   }
   const handleButtomLogin = event => {
-    const emailValidation = isValidEmail(userValue)
-    const passValidation = isValidPassword(values.password);
-    setFocusPass(passValidation)
-    setFocusEmail(emailValidation)
-    setValidation(emailValidation && passValidation)
-    if (emailValidation && passValidation) {
-      console.log('Login Exitoso')
-    } else if (emailValidation) {
-      setErrorMessage('Contraseña invalida, debe tener mínimo 8 caracteres que contenga Mayusculas, minusculas, numeros y caracter especial')
-    } else if (passValidation) {
-      setErrorMessage('email invalido')
-      console.log(emailValidation)
+    event.preventDefault()
+    setIsClear(false)
+    setValidation(userValidation && emailValidation && passValidation)
+    if (userValidation && emailValidation && passValidation) {
+      setErrorMessage(true)
+      handleRegisterAPI(values.username, values.email, values.password)
     } else {
-      setErrorMessage('email o contraseña inválida')
+      if(!userValidation){
+        setErrorMessage(msjError.user)
+      }else if(!emailValidation){
+        setErrorMessage(msjError.email)
+      }else if(!passValidation){
+        setErrorMessage(msjError.password)
+      }else{
+        setErrorMessage("Error inesperado")
+        console.error("Error Inesperado al momento del Login")
+      }
     }
   }
   const handleViewError = (error) => {
@@ -121,7 +150,25 @@ const RegisterPage = () => {
       return view
     }
   }
+  const handleRegisterAPI = (user, email, password) => {
+    RegisterAPI.signUp(user, email, password)
+      .then(res => {
+        if (res !== false) {
+          setIsLogged(true);
+          setUserInfo(res);
+          navigate("/");
+          console.clear();
+        } else {
+          setValidation(res)
+          setErrorMessage('email o contraseña inválida')
+        }
+      })
+      .catch((e) => {
+        console.error("Error Inesperado")
 
+      })
+
+  }
   return (
     <Box style={contentCenter}>
       <Card sx={{ zIndex: 1 }}>
@@ -133,8 +180,23 @@ const RegisterPage = () => {
             <Typography variant='body2'>Inicia sesisón para comenzar a comprar</Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='username' label='Username' sx={{ marginBottom: 4 }} />
-            <TextField style={handleFocusFail(focusEmail)} autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
+            <TextField
+              style={handleFocusFail(focusUser)}
+              label='Usuario'
+              autoFocus
+              id='username'
+              onChange={handleChange('username')}
+              fullWidth
+              sx={{ marginBottom: 4 }}
+            />
+            <TextField
+              style={handleFocusFail(focusEmail)}
+              label='Email'
+              autoFocus
+              id='email'
+              onChange={handleChange('email')}
+              fullWidth
+              sx={{ marginBottom: 4 }} />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Contraseña</InputLabel>
               <OutlinedInput

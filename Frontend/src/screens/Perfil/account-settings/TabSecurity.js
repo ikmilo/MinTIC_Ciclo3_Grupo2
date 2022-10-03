@@ -12,6 +12,8 @@ import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import InputAdornment from '@mui/material/InputAdornment'
+import { AppContext } from '../../../contexts/LoginContext';
+import { useContext } from 'react'
 
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
@@ -27,6 +29,7 @@ const TabSecurity = () => {
     showCurrentPassword: false,
     showConfirmNewPassword: false
   })
+  const [userInfo] = useContext(AppContext);
 
   // Handle Current Password
   const handleCurrentPasswordChange = prop => event => {
@@ -78,7 +81,8 @@ const TabSecurity = () => {
                   <InputLabel htmlFor='account-settings-current-password'>Current Password</InputLabel>
                   <OutlinedInput
                     label='Current Password'
-                    value={values.currentPassword}
+                    //value={values.currentPassword}
+                    value={userInfo.password}
                     id='account-settings-current-password'
                     type={values.showCurrentPassword ? 'text' : 'password'}
                     onChange={handleCurrentPasswordChange('currentPassword')}

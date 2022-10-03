@@ -2,7 +2,7 @@
 //import { useState } from 'react'
 
 // ** MUI Imports
-
+import { useContext } from 'react'
 import Grid from '@mui/material/Grid'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
@@ -11,25 +11,28 @@ import InputLabel from '@mui/material/InputLabel'
 import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
+import { AppContext } from '../../../contexts/LoginContext';
+
 
 const TabAccount = () => {
+  const [userInfo] = useContext(AppContext);
   return (
     <CardContent>
       <form>
         <Grid container spacing={7}>
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label='Username' placeholder='johnDoe' defaultValue='johnDoe' />
+            <TextField fullWidth label='Username' placeholder={userInfo.username} defaultValue={userInfo.username} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label='Name' placeholder='John Doe' defaultValue='John Doe' />
+            <TextField fullWidth label='Name' placeholder={userInfo.name} defaultValue={userInfo.name} />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
               type='email'
               label='Email'
-              placeholder='johnDoe@example.com'
-              defaultValue='johnDoe@example.com'
+              placeholder={userInfo.email}
+              defaultValue={userInfo.email}
             />
           </Grid>
           <Grid item xs={12} sm={6}>

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package servlets;
 
 import controller.UsuarioController;
@@ -36,7 +32,7 @@ public class ServletUsuarioRegister extends HttpServlet {
         String lastname = request.getParameter("lastName");
                       
         String result = usuario.register(username, email, password, name, lastname);
-        
+        response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         response.setContentType("text-html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         out.println(result);

@@ -26,6 +26,7 @@ public class ServletUsuarioLogin extends HttpServlet {
         String contrasena = request.getParameter("password");
         String result = usuario.login(username, contrasena);
         
+        response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         response.setContentType("text-html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         out.println(result);

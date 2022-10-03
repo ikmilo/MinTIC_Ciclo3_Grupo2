@@ -6,7 +6,10 @@ export const isValidEmail = email => {
 
 export const isValidPassword = password => {
   const validPasswordRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{8,})');
-  // const validPasswordRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})');
   return validPasswordRegex.test(password);
 };
 
+export const isValidUser = user => {
+  const validUserRegex = new RegExp(/^[a-z0-9_-]{2,16}$/);
+  return validUserRegex.test(user);
+};

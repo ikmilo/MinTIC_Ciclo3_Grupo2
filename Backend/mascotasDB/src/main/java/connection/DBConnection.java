@@ -13,7 +13,7 @@ public class DBConnection {
     static String bd = "mascotasdb";
     static String port = "3307";
     static String login = "root";
-    static String password = "12345";
+    static String password = "123456";
     
     
     public DBConnection(){
