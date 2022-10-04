@@ -3,16 +3,35 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import CardAppleWatch from './CardAppleWatch';
 import Box from '@mui/material/Box';
+import Grow from '@mui/material/Grow';
 import LinearProgress from '@mui/material/LinearProgress';
+
+import Backdrop from '@mui/material/Backdrop';
+
+
 import { ItemListAPI } from '../services/ProductsAPI'
 import { AppContext } from '../contexts/LoginContext';
+
+const loadingStyle = {
+  height: '100hv',
+  margin: '0 auto',
+  textAlign: 'center',
+  justifyContent: 'center',
+  displa: 'flex',
+}
+
 
 export default function SpacingGrid() {
   const [articulos, setArticulos] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [shop, setShop] = useState([]);
+  const [checked, setChecked] = useState(false);
   const [isLogged, setIsLogged] = useContext(AppContext);
   const spacing = 4;
+
+  const handleChange = () => {
+    setChecked(isLoaded);
+  };
 
   const handleItemList = async () => {
     try {
@@ -21,6 +40,7 @@ export default function SpacingGrid() {
           setArticulos(res);
         })
       setIsLoaded(true)
+      setChecked(true);
     } catch (e) {
       console.log(e)
       console.log("Algo está fallando")
@@ -29,30 +49,31 @@ export default function SpacingGrid() {
 
   useEffect(() => {
     handleItemList()
-    
+
   }, []);
 
-  const handleCarrito = (e) =>{
+  const handleCarrito = (e) => {
     setShop(e)
     console.log("res")
   }
 
 
-  
-  
+
+
   return (
     <>
       {isLoaded ?
         <Grid sx={{ flexGrow: 1 }} container spacing={2}>
-          <button type="button" onClick={handleCarrito}>test</button>
           <Grid item xs={13}>
-            <Grid container justifyContent="center" spacing={spacing}>
-              {articulos.map((value) => (
-                <Grid item>
-                  <CardAppleWatch data={value} login={isLogged} car={(car)=>handleCarrito(car)}></CardAppleWatch>
-                </Grid>
-              ))}
-            </Grid>
+            <Grow in={checked}>
+              <Grid container justifyContent="center" spacing={spacing}>
+                {articulos.map((value) => (
+                  <Grid item>
+                    <CardAppleWatch data={value} login={isLogged} car={(car) => handleCarrito(car)}></CardAppleWatch>
+                  </Grid>
+                ))}
+              </Grid>
+            </Grow>
           </Grid>
           <Grid item xs={12}>
             <Paper sx={{ p: 2 }}>
@@ -62,15 +83,19 @@ export default function SpacingGrid() {
                 </Grid>
               </Grid>
             </Paper>
-
           </Grid>
         </Grid>
         :
-        <div>
-          <h1>Cargando</h1>
-          <Box sx={{ width: '100%' }}>
-            <LinearProgress />
-          </Box>
+        <div style={loadingStyle}>
+          <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={isLoaded}
+          >
+            <img src='/img/michi.gif' />
+            <Box sx={{ width: '30%' }}>
+              <LinearProgress />
+            </Box>
+          </Backdrop>
         </div>
       }
     </>

@@ -17,6 +17,14 @@ import InputAdornment from '@mui/material/InputAdornment'
 import MuiFormControlLabel from '@mui/material/FormControlLabel'
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
+import PropTypes from 'prop-types';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import CloseIcon from '@mui/icons-material/Close';
+
+
 import { RegisterAPI } from '../../services/LoginAPI'
 import { AppContext } from '../../contexts/LoginContext';
 
@@ -41,6 +49,44 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
     color: theme.palette.text.secondary
   }
 }))
+
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  '& .MuiDialogContent-root': {
+    padding: theme.spacing(2),
+  },
+  '& .MuiDialogActions-root': {
+    padding: theme.spacing(1),
+  },
+}));
+
+const BootstrapDialogTitle = (props) => {
+  const { children, onClose, ...other } = props;
+
+  return (
+    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+      {children}
+      {onClose ? (
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </DialogTitle>
+  );
+};
+
+BootstrapDialogTitle.propTypes = {
+  children: PropTypes.node,
+  onClose: PropTypes.func.isRequired,
+};
 
 const RegisterPage = () => {
   //Styles
@@ -70,15 +116,25 @@ const RegisterPage = () => {
   const [userValidation, setUserValidation] = useState(false);
   const [emailValidation, setEmailValidation] = useState(false);
   const [passValidation, setPassValidation] = useState(false);
+  const [checked, setChecked] = useState(false);
   const [isClear, setIsClear] = useState(true);
   const [isLogged, setIsLogged] = useContext(AppContext);
   const [userInfo, setUserInfo] = useContext(AppContext);
+  const [open, setOpen] = useState(false);
 
   const msjError = {
     user: 'El usaurio debe tener de 4 a 15 caracteres',
     email: 'el email ingresado no es válido',
-    password: 'La contraseña debe ser de mínimo 8 caracteres y debe contener Mayusculas, minusculas, numeros y caracter especial'
+    password: 'La contraseña debe ser de mínimo 8 caracteres y debe contener Mayusculas, minusculas, numeros y caracter especial',
+    check: 'Debes Aceptar nuestros Terminos & Condiciones para ser parte de nuestra comunidad',
   }
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const navigate = useNavigate();
 
@@ -108,8 +164,8 @@ const RegisterPage = () => {
   const handleButtomLogin = event => {
     event.preventDefault()
     setIsClear(false)
-    setValidation(userValidation && emailValidation && passValidation)
-    if (userValidation && emailValidation && passValidation) {
+    setValidation(userValidation && emailValidation && passValidation && checked)
+    if (userValidation && emailValidation && passValidation && checked) {
       setErrorMessage(true)
       handleRegisterAPI(values.username, values.email, values.password)
     } else {
@@ -119,6 +175,8 @@ const RegisterPage = () => {
         setErrorMessage(msjError.email)
       } else if (!passValidation) {
         setErrorMessage(msjError.password)
+      } else if (!checked) {
+        setErrorMessage(msjError.check)
       } else {
         setErrorMessage("Error inesperado")
         console.error("Error Inesperado al momento del Login")
@@ -156,19 +214,19 @@ const RegisterPage = () => {
       .then(res => {
         if (res !== true) {
           RegisterAPI.signUp(user, email, password)
-          .then(res => {
-            if (res !== false) {
-              setIsLogged(true);
-              setUserInfo(res);
-              navigate("/");
-              //console.clear();
-            } else {
-              setValidation(res)
-              setErrorMessage('email o contraseña inválida')
-            }
-          })
-          .catch((e) => {
-            console.error("Error Inesperado")
+            .then(res => {
+              if (res !== false) {
+                setIsLogged(true);
+                setUserInfo(res);
+                navigate("/");
+                //console.clear();
+              } else {
+                setValidation(res)
+                setErrorMessage('email o contraseña inválida')
+              }
+            })
+            .catch((e) => {
+              console.error("Error Inesperado")
             })
         } else {
           setValidation(!res)
@@ -181,10 +239,11 @@ const RegisterPage = () => {
       <Card sx={{ zIndex: 1 }}>
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
           <Box sx={{ mb: 6 }}>
+            <img src='/img/logoB.png' style={{ width: '100px' }} />
             <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
-              Bienvenido!
+              ¡Bienvenido!
             </Typography>
-            <Typography variant='body2'>Inicia sesisón para comenzar a comprar</Typography>
+            <Typography variant='body2'>Registrate y se parte de nuestra comunidad</Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
             <TextField
@@ -228,16 +287,36 @@ const RegisterPage = () => {
               />
             </FormControl>
             <FormControlLabel
-              control={<Checkbox />}
+              control={<Checkbox onClick={(e) => { setChecked(e.target.checked) }} />}
               label={
                 <Fragment>
                   <span>Acepto </span>
 
-                  <LinkStyled onClick={e => e.preventDefault()}>terminos & condiciones</LinkStyled>
+                  <LinkStyled onClick={handleClickOpen}>terminos & condiciones</LinkStyled>
 
                 </Fragment>
               }
             />
+            <BootstrapDialog
+              onClose={handleClose}
+              aria-labelledby="customized-dialog-title"
+              open={open}
+            >
+              <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
+                Terminos & Condiciones
+              </BootstrapDialogTitle>
+              <DialogContent dividers>
+                <Typography gutterBottom>
+                  1. Le darás un punto extra al Grupo 2 por la buena onda :)
+                </Typography>
+                <Typography gutterBottom>
+                  2. Si sabes de algún empleo de programador, recomiendanos!
+                </Typography>
+                <Typography gutterBottom>
+                  3. Aprobarás este trabajo práctico
+                </Typography>
+              </DialogContent>
+            </BootstrapDialog>
             <Button
               fullWidth
               size='large'

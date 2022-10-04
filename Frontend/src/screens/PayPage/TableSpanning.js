@@ -7,7 +7,7 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 
-const TAX_RATE = 0.07
+const TAX_RATE = 0.16
 
 const ccyFormat = num => {
   return `${num.toFixed(2)}`
@@ -29,8 +29,6 @@ const subtotal = items => {
 
 const rows = [
   createRow('Paperclips (Box)', 100, 1.15),
-  createRow('Paper (Case)', 10, 45.99),
-  createRow('Waste Basket', 2, 17.99)
 ]
 const invoiceSubtotal = subtotal(rows)
 const invoiceTaxes = TAX_RATE * invoiceSubtotal
@@ -45,13 +43,13 @@ const TableSpanning = () => {
             <TableCell align='center' colSpan={3}>
               Details
             </TableCell>
-            <TableCell align='right'>Price</TableCell>
+            <TableCell align='right'>Precio</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>Desc</TableCell>
-            <TableCell align='right'>Qty.</TableCell>
-            <TableCell align='right'>Unit</TableCell>
-            <TableCell align='right'>Sum</TableCell>
+            <TableCell>Producto</TableCell>
+            <TableCell align='right'>Cantidad</TableCell>
+            <TableCell align='right'>Valor Unitario</TableCell>
+            <TableCell align='right'>Suma</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -69,7 +67,7 @@ const TableSpanning = () => {
             <TableCell align='right'>{ccyFormat(invoiceSubtotal)}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>Tax</TableCell>
+            <TableCell>IVA</TableCell>
             <TableCell align='right'>{`${(TAX_RATE * 100).toFixed(0)} %`}</TableCell>
             <TableCell align='right'>{ccyFormat(invoiceTaxes)}</TableCell>
           </TableRow>

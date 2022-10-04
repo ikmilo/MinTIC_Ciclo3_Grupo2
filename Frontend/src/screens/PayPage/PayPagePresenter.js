@@ -11,7 +11,7 @@ const PayPagePresenter = () => {
 
     const contenedorStyle = {
         margin: 'auto',
-        marginTop: '2%',
+        marginTop: '7%',
         //background: 'red',
         maxWidth: '1600px',
         //display: 'flex',
@@ -34,7 +34,7 @@ const PayPagePresenter = () => {
     return (
         <div style={contenedorStyle}>
             <h1 style={titleStyle}>Carrito ({count})</h1>
-            <TableSpanning></TableSpanning>
+            <TableSpanning />
             <div style={buttomStyle}>
                 <Button variant="contained" size="large">
                     Comprar

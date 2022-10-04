@@ -5,8 +5,8 @@ const ContenedorProducto = () => {
 
     const contenedorStyle = {
         margin: 'auto',
-        marginTop: '2%',
-        //background: 'red',
+        marginTop: '5%',
+        //background: '#f0f2f2',
         maxWidth: '1600px',
         
     }

@@ -4,7 +4,7 @@ const AccountPresenter = () => {
 
     const contenedorStyle = {
         margin: 'auto',
-        marginTop: '2%',
+        marginTop: '7%',
         //background: 'red',
         maxWidth: '1600px',
         //display: 'flex',

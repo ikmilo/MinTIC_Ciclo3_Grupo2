@@ -2,7 +2,7 @@
 //import { useState } from 'react'
 
 // ** MUI Imports
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import Grid from '@mui/material/Grid'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
@@ -11,6 +11,11 @@ import InputLabel from '@mui/material/InputLabel'
 import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import { AppContext } from '../../../contexts/LoginContext';
 
 
@@ -20,6 +25,15 @@ const TabAccount = () => {
     alert("Seguro seguro seguro?")
 
   }
+    const [open, setOpen] = useState(false);
+  
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
   return (
     <CardContent>
       <form>
@@ -46,7 +60,7 @@ const TabAccount = () => {
             <Button variant='contained' sx={{ marginRight: 3.5 }}>
               Actualizar Datos
             </Button>
-            <Button variant='outlined' color='secondary' onClick={(e) => { handleDeleteUser() }}>
+            <Button variant='outlined' color='secondary' onClick={(e) => { handleClickOpen() }}>
               Eliminar Cuenta
             </Button>
             <Dialog
@@ -56,18 +70,17 @@ const TabAccount = () => {
               aria-describedby="alert-dialog-description"
             >
               <DialogTitle id="alert-dialog-title">
-                {"Use Google's location service?"}
+                {"Está a punto de eliminar su cuenta"}
               </DialogTitle>
               <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                  Let Google help apps determine location. This means sending anonymous
-                  location data to Google, even when no apps are running.
+                  ¿Está seguro de eliminar su cuenta?.
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose}>Disagree</Button>
+                <Button onClick={handleClose}>Cancelar</Button>
                 <Button onClick={handleClose} autoFocus>
-                  Agree
+                  Eliminar
                 </Button>
               </DialogActions>
             </Dialog>

@@ -157,6 +157,7 @@ const LoginPage = () => {
       <Card sx={{ zIndex: 1 }}>
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
           <Box sx={{ mb: 6 }}>
+            <img src='/img/logoB.png' style={{width:'100px'}} />
             <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
               Bienvenido!
             </Typography>

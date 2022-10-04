@@ -175,9 +175,9 @@ export default function PrimarySearchAppBar() {
   );
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="fixed" style={{backgroundColor:'#13b5ea'}}>
         <Toolbar>
-          <IconButton
+          {/* <IconButton
             size="large"
             edge="start"
             color="inherit"
@@ -185,19 +185,21 @@ export default function PrimarySearchAppBar() {
             sx={{ mr: 2 }}
           >
             <MenuIcon />
-          </IconButton>
+          </IconButton> */}
           <Link to={"/"} style={NoStyleLink}>
-            {/* <Typography
+            <img src="/img/logoW.png" width="50px" />
+          </Link>
+          <Link to={"/"} style={NoStyleLink}>
+            {<Typography
               variant="h6"
               noWrap
               component="div"
               sx={{ display: { xs: 'none', sm: 'block' }, color: '#fff' }}
             >
               Animalarium
-  </Typography> */}
-          <img src="/img/logoW.png" width="50px" />
+            </Typography>}
           </Link>
-          <Search>
+          {/* <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -205,7 +207,7 @@ export default function PrimarySearchAppBar() {
               placeholder="Buscar…"
               inputProps={{ 'aria-label': 'search' }}
             />
-          </Search>
+</Search> */}
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }} >
             <div style={handleIsLogged(isLogged)}>

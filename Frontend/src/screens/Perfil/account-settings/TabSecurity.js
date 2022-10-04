@@ -78,7 +78,7 @@ const TabSecurity = () => {
             <Grid container spacing={5}>
               <Grid item xs={12} sx={{ marginTop: 4.75 }}>
                 <FormControl fullWidth>
-                  <InputLabel htmlFor='account-settings-current-password'>Current Password</InputLabel>
+                  <InputLabel htmlFor='account-settings-current-password'>Contraseña Actual</InputLabel>
                   <OutlinedInput
                     label='Current Password'
                     //value={values.currentPassword}
@@ -104,7 +104,7 @@ const TabSecurity = () => {
 
               <Grid item xs={12} sx={{ marginTop: 0 }}>
                 <FormControl fullWidth>
-                  <InputLabel htmlFor='account-settings-new-password'>New Password</InputLabel>
+                  <InputLabel htmlFor='account-settings-new-password'>Nueva Contraseña</InputLabel>
                   <OutlinedInput
                     label='New Password'
                     value={values.newPassword}
@@ -129,7 +129,7 @@ const TabSecurity = () => {
 
               <Grid item xs={12}>
                 <FormControl fullWidth>
-                  <InputLabel htmlFor='account-settings-confirm-new-password'>Confirm New Password</InputLabel>
+                  <InputLabel htmlFor='account-settings-confirm-new-password'>Confirma Nueva Contraseña</InputLabel>
                   <OutlinedInput
                     label='Confirm New Password'
                     value={values.confirmNewPassword}
@@ -159,15 +159,7 @@ const TabSecurity = () => {
       <CardContent>
         <Box sx={{ mt: 11 }}>
           <Button variant='contained' sx={{ marginRight: 3.5 }}>
-            Save Changes
-          </Button>
-          <Button
-            type='reset'
-            variant='outlined'
-            color='secondary'
-            onClick={() => setValues({ ...values, currentPassword: '', newPassword: '', confirmNewPassword: '' })}
-          >
-            Reset
+            Actualizar Contraseña
           </Button>
         </Box>
       </CardContent>
