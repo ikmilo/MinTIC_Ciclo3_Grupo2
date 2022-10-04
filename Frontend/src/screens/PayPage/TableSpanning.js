@@ -7,6 +7,7 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 
+const TableSpanning = ({carrito}) => {
 const TAX_RATE = 0.16
 
 const ccyFormat = num => {
@@ -30,11 +31,9 @@ const subtotal = items => {
 const rows = [
   createRow('Paperclips (Box)', 100, 1.15),
 ]
-const invoiceSubtotal = subtotal(rows)
+const invoiceSubtotal = subtotal(carrito)
 const invoiceTaxes = TAX_RATE * invoiceSubtotal
 const invoiceTotal = invoiceTaxes + invoiceSubtotal
-
-const TableSpanning = () => {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label='spanning table'>
@@ -46,6 +45,7 @@ const TableSpanning = () => {
             <TableCell align='right'>Precio</TableCell>
           </TableRow>
           <TableRow>
+            <TableCell></TableCell>
             <TableCell>Producto</TableCell>
             <TableCell align='right'>Cantidad</TableCell>
             <TableCell align='right'>Valor Unitario</TableCell>
@@ -53,11 +53,12 @@ const TableSpanning = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(row => (
-            <TableRow key={row.desc}>
-              <TableCell>{row.desc}</TableCell>
-              <TableCell align='right'>{row.qty}</TableCell>
-              <TableCell align='right'>{row.unit}</TableCell>
+          {carrito.map(row => (
+            <TableRow key={row.title}>
+              <TableCell><img src={row.url} style={{width:'80px'}} /></TableCell>
+              <TableCell>{row.title}</TableCell>
+              <TableCell align='right'>{1}</TableCell>
+              <TableCell align='right'>{row.price}</TableCell>
               <TableCell align='right'>{ccyFormat(row.price)}</TableCell>
             </TableRow>
           ))}

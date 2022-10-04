@@ -21,17 +21,22 @@ const loadingStyle = {
 }
 
 
-export default function SpacingGrid() {
+export default function SpacingGrid({handleBackCarrito}) {
   const [articulos, setArticulos] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [shop, setShop] = useState([]);
   const [checked, setChecked] = useState(false);
   const [isLogged, setIsLogged] = useContext(AppContext);
+  
   const spacing = 4;
 
   const handleChange = () => {
     setChecked(isLoaded);
   };
+
+  const handleCallback = (childData) => {
+    handleBackCarrito(childData)
+  }
 
   const handleItemList = async () => {
     try {
@@ -69,7 +74,7 @@ export default function SpacingGrid() {
               <Grid container justifyContent="center" spacing={spacing}>
                 {articulos.map((value) => (
                   <Grid item>
-                    <CardAppleWatch data={value} login={isLogged} car={(car) => handleCarrito(car)}></CardAppleWatch>
+                    <CardAppleWatch data={value} login={isLogged} parentCallback={handleCallback}></CardAppleWatch>
                   </Grid>
                 ))}
               </Grid>

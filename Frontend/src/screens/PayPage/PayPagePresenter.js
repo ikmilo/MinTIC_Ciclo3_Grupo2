@@ -7,7 +7,7 @@ import TableSpanning from "./TableSpanning"
 //import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
-const PayPagePresenter = () => {
+const PayPagePresenter = ({carrito}) => {
 
     const contenedorStyle = {
         margin: 'auto',
@@ -29,12 +29,12 @@ const PayPagePresenter = () => {
         alignItems: 'right',
         justifyContent: 'right',
     }
-    const [count, setCount] = useState(0);
-
+    const [count, setCount] = useState(carrito.length);
+    
     return (
         <div style={contenedorStyle}>
             <h1 style={titleStyle}>Carrito ({count})</h1>
-            <TableSpanning />
+            <TableSpanning carrito={carrito}/>
             <div style={buttomStyle}>
                 <Button variant="contained" size="large">
                     Comprar

@@ -72,7 +72,7 @@ const NoStyleLink = {
 
 
 
-export default function PrimarySearchAppBar() {
+export default function PrimarySearchAppBar({carrito}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [isLogged, setIsLogged] = React.useContext(AppContext);
@@ -213,7 +213,7 @@ export default function PrimarySearchAppBar() {
             <div style={handleIsLogged(isLogged)}>
               <Link to={"/Cart"} style={NoStyleLink} >
                 <IconButton style={iconColor} size="large" aria-label="show 4 new mails">
-                  <Badge badgeContent={count} color="error">
+                  <Badge badgeContent={carrito.length} color="error">
                     <ShoppingCartIcon />
                   </Badge>
                 </IconButton>

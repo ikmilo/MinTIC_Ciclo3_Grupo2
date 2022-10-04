@@ -64,7 +64,7 @@ const ShopDetailsSubContainer = {
   marginTop: '3.3%',
 }
 
-const CardAppleWatch = ({ data, login, car }) => {
+const CardAppleWatch = ({ data, login, parentCallback}) => {
   const [carrito, setCarrito] = useState([]);
   const [open, setOpen] = useState(false);
 
@@ -72,6 +72,10 @@ const CardAppleWatch = ({ data, login, car }) => {
   const jsonTxt = data;
   const txt = jsonTxt;
   const articulo = JSON.parse(txt);
+
+  const onTrigger = (lista) => {
+    parentCallback(lista);
+  }
 
   const currency = (number) => {
     return new Intl.NumberFormat('en-ES', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(number);
@@ -88,10 +92,10 @@ const CardAppleWatch = ({ data, login, car }) => {
   const handleCarChopping = (item) => {
     if (login) {
       setCarrito([...carrito, item])
-      
+      onTrigger(carrito)
     } else {
       navigate("/LoginPage");
-      setCarrito([])
+      
     }
 
   }
@@ -148,7 +152,7 @@ const CardAppleWatch = ({ data, login, car }) => {
                   </Button>
                   <Button
                     variant='outlined'
-                    sx={{ py: 1, width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0, marginTop:'5%' }}
+                    sx={{ py: 1, width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0, marginTop: '5%' }}
                     onClick={handleClose}
                   >
                     Cancelar

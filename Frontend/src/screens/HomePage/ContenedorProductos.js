@@ -1,7 +1,7 @@
 import SpacingGrid from '../../components/SpacingGrid'
 import Carousel from '../../components/Carousel'
 
-const ContenedorProducto = () => {
+const ContenedorProducto = ({handleCarShop}) => {
 
     const contenedorStyle = {
         margin: 'auto',
@@ -10,10 +10,14 @@ const ContenedorProducto = () => {
         maxWidth: '1600px',
         
     }
+
+    const getCallCarrito = (c) =>{
+        handleCarShop(c)
+    }
     return (
         <div style={contenedorStyle}>
             <Carousel></Carousel>
-            <SpacingGrid></SpacingGrid>
+            <SpacingGrid handleBackCarrito={getCallCarrito}></SpacingGrid>
         </div>
 
     )
