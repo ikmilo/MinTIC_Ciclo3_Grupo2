@@ -49,6 +49,11 @@ const AccountSettings = () => {
     setValue(newValue)
   }
 
+const handleDeleteUser = () => {
+  console.log("Ejecutando Botón")
+}
+
+
   return (
     <Card>
       <TabContext value={value}>
@@ -87,7 +92,7 @@ const AccountSettings = () => {
         </TabList>
 
         <TabPanel sx={{ p: 0 }} value='Perfil' index={0}>
-          <TabAccount />
+          <TabAccount/>
         </TabPanel>
         <TabPanel sx={{ p: 1 }} value='Seguridad' index={1}>
           <TabSecurity />

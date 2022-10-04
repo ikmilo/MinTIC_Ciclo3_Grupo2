@@ -12,7 +12,7 @@ export const RegisterAPI = {
 
     },
     emailCheck: (email) => {
-        return apiInstance.get(LOGIN_ENDPOINTS.SIGN_UP, { params: { email: email} }).then(({ data }) => data);
+        return apiInstance.get(LOGIN_ENDPOINTS.EMAIL_CHECK, { params: { email: email} }).then(({ data }) => data);
 
     },
 }

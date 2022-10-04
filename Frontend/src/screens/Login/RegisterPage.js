@@ -154,24 +154,24 @@ const RegisterPage = () => {
 
     RegisterAPI.emailCheck(email)
       .then(res => {
-        if (res !== false) {
+        if (res !== true) {
           RegisterAPI.signUp(user, email, password)
-            .then(res => {
-              if (res !== false) {
-                setIsLogged(true);
-                setUserInfo(res);
-                navigate("/");
-                console.clear();
-              } else {
-                setValidation(res)
-                setErrorMessage('email o contraseña inválida')
-              }
-            })
-            .catch((e) => {
-              console.error("Error Inesperado")
+          .then(res => {
+            if (res !== false) {
+              setIsLogged(true);
+              setUserInfo(res);
+              navigate("/");
+              //console.clear();
+            } else {
+              setValidation(res)
+              setErrorMessage('email o contraseña inválida')
+            }
+          })
+          .catch((e) => {
+            console.error("Error Inesperado")
             })
         } else {
-          setValidation(res)
+          setValidation(!res)
           setErrorMessage('el email que intenta registar ya está en uso')
         }
       })
