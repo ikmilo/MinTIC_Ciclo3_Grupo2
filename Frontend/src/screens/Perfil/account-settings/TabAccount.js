@@ -16,6 +16,10 @@ import { AppContext } from '../../../contexts/LoginContext';
 
 const TabAccount = () => {
   const [userInfo] = useContext(AppContext);
+  const handleDeleteUser = () => {
+    alert("Seguro seguro seguro?")
+
+  }
   return (
     <CardContent>
       <form>
@@ -27,6 +31,9 @@ const TabAccount = () => {
             <TextField fullWidth label='Name' placeholder={userInfo.name} defaultValue={userInfo.name} />
           </Grid>
           <Grid item xs={12} sm={6}>
+            <TextField fullWidth label='Lastname' placeholder={userInfo.lastname} defaultValue={userInfo.lastname} />
+          </Grid>
+          <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
               type='email'
@@ -35,22 +42,35 @@ const TabAccount = () => {
               defaultValue={userInfo.email}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <InputLabel>Role</InputLabel>
-              <Select label='Role' defaultValue='admin'>
-                <MenuItem value='admin'>Admin</MenuItem>
-                <MenuItem value='editor'>Editor</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
           <Grid item xs={12}>
             <Button variant='contained' sx={{ marginRight: 3.5 }}>
-              Save Changes
+              Actualizar Datos
             </Button>
-            <Button type='reset' variant='outlined' color='secondary'>
-              Reset
+            <Button variant='outlined' color='secondary' onClick={(e) => { handleDeleteUser() }}>
+              Eliminar Cuenta
             </Button>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {"Use Google's location service?"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Let Google help apps determine location. This means sending anonymous
+                  location data to Google, even when no apps are running.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose}>Disagree</Button>
+                <Button onClick={handleClose} autoFocus>
+                  Agree
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Grid>
         </Grid>
       </form>
