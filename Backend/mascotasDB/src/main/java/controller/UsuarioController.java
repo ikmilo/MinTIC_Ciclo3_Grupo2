@@ -71,39 +71,6 @@ public class UsuarioController implements IUsuarioController {
     }
 
     @Override
-    public String actualizar(String username, String email, String password, String name, String lastname) {
-       
-          DBConnection con = new DBConnection();
-          
-        //verificamos que el usuario se encuentre en la base de datos  
-          
-        String sql = "Select * from users where email = '" + email + "'";
-        try {
-            Statement st = con.getConnection().createStatement();
-            ResultSet rs = st.executeQuery(sql);
-
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                
-             //  String username = rs.getString("username");
-             //  String name = rs.getString("name");
-             //  String lastname = rs.getString("lastName");
-             
-                int loggin = rs.getInt("loggin");
-                Usuarios usuario = new Usuarios(id, username, email, password, name, lastname, loggin);
-                System.out.println("el usuario " + username + " ingresó al sistema");
-                return gson.toJson(usuario);
-            }
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        } finally {
-            con.desconectar();
-        }
-        return "false";
-        
-    }
-
-    @Override
     public String verificar_email(String email) {
     
       
@@ -134,5 +101,29 @@ public class UsuarioController implements IUsuarioController {
     
     }
 
+    @Override
+    public String actualizar_datos(String id, String username,String email, String name, String lastname) {
+     
+           DBConnection con = new DBConnection();
+           String indidador_actualizacion="false";
+           
+           String sql = "update users set username = '" + username + "',email='"+email+"',name='"+name+"',lastName='"+lastname+"' where id='"+id+"'";
+        try {
+            Statement st = con.getConnection().createStatement();
+            //ResultSet rs = st.executeQuery(sql);
+             st.executeUpdate(sql);
+           // while (rs.next()) {
+                indidador_actualizacion="true";
+                return indidador_actualizacion;
+          //  }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            con.desconectar();
+        }
+        return "false";
+        
+       
+    }
 
 }
