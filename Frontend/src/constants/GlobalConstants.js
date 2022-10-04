@@ -1,6 +1,7 @@
 export const LOGIN_ENDPOINTS = {
   LOGIN: '/ServletUsuarioLogin',
   SIGN_UP: '/ServletUsuarioRegister',
+  EMAIL_CHECK: 'ServletVerificarEmail',
 };
 
 export const ITEMS_ENDPOINTS = {

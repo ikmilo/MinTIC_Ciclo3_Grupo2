@@ -1,31 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import CardAppleWatch from './CardAppleWatch';
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import { ItemListAPI } from '../services/ProductsAPI'
-
-
-
+import { AppContext } from '../contexts/LoginContext';
 
 export default function SpacingGrid() {
   const [articulos, setArticulos] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [shop, setShop] = useState([]);
+  const [isLogged, setIsLogged] = useContext(AppContext);
   const spacing = 4;
 
-  const handlePokeAPI = async () => {
-    try {
-      const res = await fetch('https://pokeapi.co/api/v2/pokemon/')
-      const data = await res.json()
-      const lista = data.results
-      setArticulos(lista)
-      setIsLoaded(true)
-
-    } catch (e) {
-      console.log(e)
-    }
-  }
   const handleItemList = async () => {
     try {
       await ItemListAPI.itemList()
@@ -37,25 +25,31 @@ export default function SpacingGrid() {
       console.log(e)
       console.log("Algo está fallando")
     }
-
   }
 
   useEffect(() => {
     handleItemList()
-      .then(
-
-    );
+    
   }, []);
 
+  const handleCarrito = (e) =>{
+    setShop(e)
+    console.log("res")
+  }
+
+
+  
+  
   return (
     <>
       {isLoaded ?
-        <Grid sx={{ flexGrow: 1}} container spacing={2}>
+        <Grid sx={{ flexGrow: 1 }} container spacing={2}>
+          <button type="button" onClick={handleCarrito}>test</button>
           <Grid item xs={13}>
             <Grid container justifyContent="center" spacing={spacing}>
               {articulos.map((value) => (
                 <Grid item>
-                  <CardAppleWatch data={value}></CardAppleWatch>
+                  <CardAppleWatch data={value} login={isLogged} car={(car)=>handleCarrito(car)}></CardAppleWatch>
                 </Grid>
               ))}
             </Grid>

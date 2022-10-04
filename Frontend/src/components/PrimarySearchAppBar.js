@@ -75,11 +75,10 @@ const NoStyleLink = {
 export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-  const [carrito, setCarrito] = React.useContext(AppContext);
   const [isLogged, setIsLogged] = React.useContext(AppContext);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const count = carrito.length
+  const count = 0
 
   const handleIsLogged = (login) => {
 
@@ -188,14 +187,15 @@ export default function PrimarySearchAppBar() {
             <MenuIcon />
           </IconButton>
           <Link to={"/"} style={NoStyleLink}>
-            <Typography
+            {/* <Typography
               variant="h6"
               noWrap
               component="div"
               sx={{ display: { xs: 'none', sm: 'block' }, color: '#fff' }}
             >
-              Tienda de Mascotas
-            </Typography>
+              Animalarium
+  </Typography> */}
+          <img src="/img/logoW.png" width="50px" />
           </Link>
           <Search>
             <SearchIconWrapper>
