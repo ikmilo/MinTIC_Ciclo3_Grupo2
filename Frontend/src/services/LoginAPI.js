@@ -15,4 +15,8 @@ export const RegisterAPI = {
         return apiInstance.get(LOGIN_ENDPOINTS.EMAIL_CHECK, { params: { email: email} }).then(({ data }) => data);
 
     },
+    userUpdate: (id, username, email, name, lastname) => {
+        return apiInstance.get(LOGIN_ENDPOINTS.USER_UPDATE, { params: { id:id, username:username, email:email, name:name, lastName:lastname } }).then(({ data }) => data);
+
+    },
 }

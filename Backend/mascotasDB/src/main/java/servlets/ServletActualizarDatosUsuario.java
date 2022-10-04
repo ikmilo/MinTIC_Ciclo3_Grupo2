@@ -64,7 +64,7 @@ public class ServletActualizarDatosUsuario extends HttpServlet {
         String username = request.getParameter("username");
         String email = request.getParameter("email");
         String name = request.getParameter("name");
-        String lastname = request.getParameter("lastname");
+        String lastname = request.getParameter("lastName");
         
         
         String result = usuario.actualizar_datos(id,username,email,name,lastname);

@@ -2,22 +2,25 @@
 //import { useState } from 'react'
 
 // ** MUI Imports
-import { useContext, useState } from 'react'
+import { useContext, useState, forwardRef } from 'react'
 import Grid from '@mui/material/Grid'
-import Select from '@mui/material/Select'
-import MenuItem from '@mui/material/MenuItem'
 import TextField from '@mui/material/TextField'
-import InputLabel from '@mui/material/InputLabel'
 import CardContent from '@mui/material/CardContent'
-import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+import { RegisterAPI } from '../../../services/LoginAPI';
 import { AppContext } from '../../../contexts/LoginContext';
 
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const TabAccount = () => {
   const [userInfo] = useContext(AppContext);
@@ -25,27 +28,84 @@ const TabAccount = () => {
     alert("Seguro seguro seguro?")
 
   }
-    const [open, setOpen] = useState(false);
-  
-    const handleClickOpen = () => {
-      setOpen(true);
-    };
-  
-    const handleClose = () => {
-      setOpen(false);
-    };
+  const [open, setOpen] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertState, setAlertState] = useState('info');
+  const [msj, setMsj] = useState('');
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleClickAlert = () => {
+    setOpenAlert(true);
+  };
+
+  const handleCloseAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenAlert(false);
+  };
+
+  const handlerUserUpdate = (id, username, email, name, lastname) => {
+    RegisterAPI.userUpdate(id, username, email, name, lastname)
+      .then(res => {
+        if (res !== false) {
+          setOpenAlert(true)
+          setAlertState(alertState.success)
+          setMsj(alertsMjs.updateUserMjs)
+        } else {
+          console.log("Login Fail")
+          console.log(res)
+        }
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }
+  const [values, setValues] = useState({
+    id: userInfo.id,
+    username: userInfo.username,
+    email: userInfo.email,
+    name: userInfo.name,
+    lastname: userInfo.lastname,
+  })
+
+  const handleChange = prop => event => {
+    setValues({ ...values, [prop]: event.target.value })
+  }
+
+  const alertsMjs = {
+    deleteUserMJS: 'Se eliminó cuenta correctamente',
+    updateUserMjs: 'Tus datos fueron actualziados correctamente',
+    updateUserAlert: 'El Email que intenta registrar ya se encuentra en uso por otro usuario',
+  }
+
+  const alertsSeverity = {
+    error: 'error',
+    warning: 'warning',
+    info: 'info',
+    success: 'success'
+  }
+
   return (
     <CardContent>
       <form>
         <Grid container spacing={7}>
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label='Username' placeholder={userInfo.username} defaultValue={userInfo.username} />
+            <TextField fullWidth label='Username' placeholder={userInfo.username} defaultValue={userInfo.username} onChange={handleChange('username')} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label='Name' placeholder={userInfo.name} defaultValue={userInfo.name} />
+            <TextField fullWidth label='Name' placeholder={userInfo.name} defaultValue={userInfo.name} onChange={handleChange('name')} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label='Lastname' placeholder={userInfo.lastname} defaultValue={userInfo.lastname} />
+            <TextField fullWidth label='Lastname' placeholder={userInfo.lastname} defaultValue={userInfo.lastname} onChange={handleChange('lastname')} />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -54,10 +114,12 @@ const TabAccount = () => {
               label='Email'
               placeholder={userInfo.email}
               defaultValue={userInfo.email}
+              onChange={handleChange('email')}
+              disabled={true}
             />
           </Grid>
           <Grid item xs={12}>
-            <Button variant='contained' sx={{ marginRight: 3.5 }}>
+            <Button variant='contained' sx={{ marginRight: 3.5 }} onClick={(e) => { handlerUserUpdate(userInfo.id, values.username, values.email, values.name, values.lastname) }}>
               Actualizar Datos
             </Button>
             <Button variant='outlined' color='secondary' onClick={(e) => { handleClickOpen() }}>
@@ -78,7 +140,7 @@ const TabAccount = () => {
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose}>Cancelar</Button>
+                <Button onClick={(handleClose)}>Cancelar</Button>
                 <Button onClick={handleClose} autoFocus>
                   Eliminar
                 </Button>
@@ -87,6 +149,11 @@ const TabAccount = () => {
           </Grid>
         </Grid>
       </form>
+      <Snackbar open={openAlert} autoHideDuration={300} onClose={handleClose}>
+        <Alert onClose={handleCloseAlert} severity={alertState} sx={{ width: '100%' }}>
+          {msj}
+        </Alert>
+      </Snackbar>
     </CardContent>
   )
 }
