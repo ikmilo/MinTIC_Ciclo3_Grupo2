@@ -70,4 +70,69 @@ public class UsuarioController implements IUsuarioController {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
+    public String actualizar(String username, String email, String password, String name, String lastname) {
+       
+          DBConnection con = new DBConnection();
+          
+        //verificamos que el usuario se encuentre en la base de datos  
+          
+        String sql = "Select * from users where email = '" + email + "'";
+        try {
+            Statement st = con.getConnection().createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                
+             //  String username = rs.getString("username");
+             //  String name = rs.getString("name");
+             //  String lastname = rs.getString("lastName");
+             
+                int loggin = rs.getInt("loggin");
+                Usuarios usuario = new Usuarios(id, username, email, password, name, lastname, loggin);
+                System.out.println("el usuario " + username + " ingresó al sistema");
+                return gson.toJson(usuario);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            con.desconectar();
+        }
+        return "false";
+        
+    }
+
+    @Override
+    public String verificar_email(String email) {
+    
+      
+        DBConnection con = new DBConnection();
+          
+        //verificamos que el usuario se encuentre en la base de datos  
+        
+        String encontro_email="false";
+        String sql = "Select * from users where email = '" + email + "'";
+        try {
+            Statement st = con.getConnection().createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                
+                encontro_email="true";
+              //  Usuarios usuario = new Usuarios(id, username, email, password, name, lastname, loggin);
+              //  System.out.println("el usuario " + username + " ingresó al sistema");             
+                return encontro_email;
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            con.desconectar();
+        }
+        return "false";
+        
+    
+    }
+
+
 }
