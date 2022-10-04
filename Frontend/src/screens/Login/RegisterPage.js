@@ -56,9 +56,9 @@ const RegisterPage = () => {
 
   // ** State
   const [values, setValues] = useState({
-    username:'',
-    email:'',
-    password:'',
+    username: '',
+    email: '',
+    password: '',
     showPassword: false
   })
   const [userValue, setUserValue] = useState(null);
@@ -75,9 +75,9 @@ const RegisterPage = () => {
   const [userInfo, setUserInfo] = useContext(AppContext);
 
   const msjError = {
-    user:'El usaurio debe tener de 4 a 15 caracteres',
-    email:'el email ingresado no es válido',
-    password:'La contraseña debe ser de mínimo 8 caracteres y debe contener Mayusculas, minusculas, numeros y caracter especial'
+    user: 'El usaurio debe tener de 4 a 15 caracteres',
+    email: 'el email ingresado no es válido',
+    password: 'La contraseña debe ser de mínimo 8 caracteres y debe contener Mayusculas, minusculas, numeros y caracter especial'
   }
 
   const navigate = useNavigate();
@@ -113,13 +113,13 @@ const RegisterPage = () => {
       setErrorMessage(true)
       handleRegisterAPI(values.username, values.email, values.password)
     } else {
-      if(!userValidation){
+      if (!userValidation) {
         setErrorMessage(msjError.user)
-      }else if(!emailValidation){
+      } else if (!emailValidation) {
         setErrorMessage(msjError.email)
-      }else if(!passValidation){
+      } else if (!passValidation) {
         setErrorMessage(msjError.password)
-      }else{
+      } else {
         setErrorMessage("Error inesperado")
         console.error("Error Inesperado al momento del Login")
       }
@@ -151,23 +151,30 @@ const RegisterPage = () => {
     }
   }
   const handleRegisterAPI = (user, email, password) => {
-    RegisterAPI.signUp(user, email, password)
+
+    RegisterAPI.emailCheck(email)
       .then(res => {
         if (res !== false) {
-          setIsLogged(true);
-          setUserInfo(res);
-          navigate("/");
-          console.clear();
+          RegisterAPI.signUp(user, email, password)
+            .then(res => {
+              if (res !== false) {
+                setIsLogged(true);
+                setUserInfo(res);
+                navigate("/");
+                console.clear();
+              } else {
+                setValidation(res)
+                setErrorMessage('email o contraseña inválida')
+              }
+            })
+            .catch((e) => {
+              console.error("Error Inesperado")
+            })
         } else {
           setValidation(res)
-          setErrorMessage('email o contraseña inválida')
+          setErrorMessage('el email que intenta registar ya está en uso')
         }
       })
-      .catch((e) => {
-        console.error("Error Inesperado")
-
-      })
-
   }
   return (
     <Box style={contentCenter}>

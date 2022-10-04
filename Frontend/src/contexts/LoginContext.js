@@ -3,8 +3,7 @@ import React, { createContext, useState } from 'react';
 const Provider = ({ children }) =>{
   const [isLogged,setIsLogged] = useState(false);
   const [userInfo,setUserInfo] = useState([]);
-  const [carrito, setCarrito] = useState("mensaje");
-  const [car, setCar] = useState("mensaje");
+  const [car, setCar] = useState([]);
   
   return (            
           <AppContext.Provider 

@@ -11,4 +11,8 @@ export const RegisterAPI = {
         return apiInstance.get(LOGIN_ENDPOINTS.SIGN_UP, { params: { username: username, email: email, password: pass } }).then(({ data }) => data);
 
     },
+    emailCheck: (email) => {
+        return apiInstance.get(LOGIN_ENDPOINTS.SIGN_UP, { params: { email: email} }).then(({ data }) => data);
+
+    },
 }

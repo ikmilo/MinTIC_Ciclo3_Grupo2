@@ -1,25 +1,18 @@
 import React, { createContext, useState } from 'react';
 
-const Provider = ({ children }) =>{
-  const [isLogged,setIsLogged] = useState(false);
-  const [userInfo,setUserInfo] = useState([]);
-  const [carrito, setCarrito] = useState("mensaje");
-  const [car, setCar] = useState("mensaje");
+const ProviderShop = ({ children }) =>{
+  const [car, setCar] = useState([]);
   
   return (            
-          <AppContext.Provider 
+          <ShopContex.ProviderShop 
           value={[
-            isLogged,
-            setIsLogged,
-            userInfo,
-            setUserInfo,
             car,
             setCar,
           ]}>
               {children}
-          </AppContext.Provider>  
+          </ShopContex.ProviderShop>  
   );
 }
 
-export default Provider;
-export const AppContext = createContext();
+export default ProviderShop;
+export const ShopContex = createContext();
