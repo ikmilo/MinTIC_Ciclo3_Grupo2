@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8080/mascotasDB';
+const BASE_URL = 'https://animalariumshop.herokuapp.com/';
 
 const apiInstance = axios.create({baseURL:BASE_URL});
 

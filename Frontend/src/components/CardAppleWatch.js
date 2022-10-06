@@ -64,7 +64,7 @@ const ShopDetailsSubContainer = {
   marginTop: '3.3%',
 }
 
-const CardAppleWatch = ({ data, login, parentCallback}) => {
+const CardAppleWatch = ({ data, login, parentCallback }) => {
   const [carrito, setCarrito] = useState([]);
   const [open, setOpen] = useState(false);
 
@@ -95,75 +95,77 @@ const CardAppleWatch = ({ data, login, parentCallback}) => {
       onTrigger(carrito)
     } else {
       navigate("/LoginPage");
-      
+
     }
 
   }
   return (
-    <Card sx={{ maxWidth: '500px' }}>
-      <CardMedia sx={{ height: '15rem', width: '280px', margin: 'auto' }} image={articulo.url} />
-      <CardContent sx={{ padding: theme => `${theme.spacing(3, 1, 4)} !important` }}>
-        <Typography variant='h6' sx={{ marginBottom: 2, width: '350px', height: '50px' }}>
-          {articulo.title}
-        </Typography>
-        <Typography sx={{ marginBottom: 2 }}>{currency(articulo.price)}</Typography>
-      </CardContent>
-      <Button
-        variant='contained'
-        sx={{ py: 2.5, width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
-        onClick={handleClickOpen}
-      >
-        <AddShoppingCartOutlinedIcon />  Ver mas
-      </Button>
-      <Dialog
-        open={open}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"
-        maxWidth={false}
-      >
-        <DialogTitle style={{ textAlign: 'center', fontSize: '2em' }}>{articulo.title}</DialogTitle>
-        <DialogContent>
-          <div style={ShopContenedor}>
-            <div style={ShopImgContenedor}>
-              <div style={ShopImg}>
-                <img src={articulo.url} style={{ height: '100%', margin: '0 auto' }} />
+    <div>
+      <Card sx={{ maxWidth: '500px' }}>
+        <CardMedia sx={{ height: '15rem', width: '280px', margin: 'auto' }} image={articulo.url} />
+        <CardContent sx={{ padding: theme => `${theme.spacing(3, 1, 4)} !important` }}>
+          <Typography variant='h6' sx={{ marginBottom: 2, width: '350px', height: '50px' }}>
+            {articulo.title}
+          </Typography>
+          <Typography sx={{ marginBottom: 2 }}>{currency(articulo.price)}</Typography>
+        </CardContent>
+        <Button
+          variant='contained'
+          sx={{ py: 2.5, width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
+          onClick={handleClickOpen}
+        >
+          <AddShoppingCartOutlinedIcon />  Ver mas
+        </Button>
+        <Dialog
+          open={open}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleClose}
+          aria-describedby="alert-dialog-slide-description"
+          maxWidth={false}
+        >
+          <DialogTitle style={{ textAlign: 'center', fontSize: '2em' }}>{articulo.title}</DialogTitle>
+          <DialogContent>
+            <div style={ShopContenedor}>
+              <div style={ShopImgContenedor}>
+                <div style={ShopImg}>
+                  <img src={articulo.url} style={{ height: '100%', margin: '0 auto' }} />
 
-              </div>
-            </div>
-            <div style={ShopDetailsContainer}>
-              <div style={ShopDetailsSubContainer}>
-                <h1>{currency(articulo.price)}</h1>
-                <div>
-                  <p><strong>ID: </strong>{articulo.id}</p>
-                  <p><strong>Unidades Disponibles: </strong>{articulo.stock}</p>
-                  <p><strong>Categoría: </strong>{articulo.categoria}</p>
-                  <p><strong>Tipo Mascota: </strong>{articulo.typePet}</p>
-                </div>
-                <p><strong>Descripción: </strong>{articulo.description}</p>
-                <div>
-                  <Button
-                    variant='contained'
-                    sx={{ py: 2.5, width: '100%', borderTopLeftRadius: 10, borderTopRightRadius: 10 }}
-                    onClick={(event) => { handleCarChopping(articulo) }}
-                  >
-                    Agregar al Carrito
-                  </Button>
-                  <Button
-                    variant='outlined'
-                    sx={{ py: 1, width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0, marginTop: '5%' }}
-                    onClick={handleClose}
-                  >
-                    Cancelar
-                  </Button>
                 </div>
               </div>
+              <div style={ShopDetailsContainer}>
+                <div style={ShopDetailsSubContainer}>
+                  <h1>{currency(articulo.price)}</h1>
+                  <div>
+                    <p><strong>ID: </strong>{articulo.id}</p>
+                    <p><strong>Unidades Disponibles: </strong>{articulo.stock}</p>
+                    <p><strong>Categoría: </strong>{articulo.categoria}</p>
+                    <p><strong>Tipo Mascota: </strong>{articulo.typePet}</p>
+                  </div>
+                  <p><strong>Descripción: </strong>{articulo.description}</p>
+                  <div>
+                    <Button
+                      variant='contained'
+                      sx={{ py: 2.5, width: '100%', borderTopLeftRadius: 10, borderTopRightRadius: 10 }}
+                      onClick={(event) => { handleCarChopping(articulo) }}
+                    >
+                      Agregar al Carrito
+                    </Button>
+                    <Button
+                      variant='outlined'
+                      sx={{ py: 1, width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0, marginTop: '5%' }}
+                      onClick={handleClose}
+                    >
+                      Cancelar
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </Card>
+          </DialogContent>
+        </Dialog>
+      </Card>
+    </div>
   )
 }
 
